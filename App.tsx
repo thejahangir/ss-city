@@ -25,7 +25,7 @@ const About = () => {
         {
             name: "Rahul Sharma",
             role: "Founder & CEO",
-            image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80",
+            image: "https://images.unsplash.com/photo-1742981365880-698cfb84492d?auto=format&fit=crop&w=600&q=80",
             bio: "With over 15 years in the real estate sector, Rahul has been the driving force behind Shree Shyam City's rise as a trusted name in Dhanbad. His vision focuses on transparency and customer empowerment. He believes in building not just homes, but lasting communities.",
             specialization: ["Strategic Planning", "Investment Analysis", "Land Acquisition"],
             experience: "15+ Years",
@@ -36,7 +36,7 @@ const About = () => {
         {
             name: "Priya Singh",
             role: "Head of Sales",
-            image: "https://images.unsplash.com/photo-1573496359-936d9dd3a94b?auto=format&fit=crop&w=600&q=80",
+            image: "https://images.unsplash.com/photo-1681164315947-0f117a6dbbf7?auto=format&fit=crop&w=600&q=80",
             bio: "Priya ensures every client finds their perfect match with her expert market knowledge. She leads a dynamic team of consultants and is known for her exceptional negotiation skills and client-first approach.",
             specialization: ["Residential Sales", "Client Negotiations", "Market Research"],
             experience: "8+ Years",
@@ -47,7 +47,7 @@ const About = () => {
         {
             name: "Amit Verma",
             role: "Legal Advisor",
-            image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&q=80",
+            image: "https://images.unsplash.com/photo-1559192823-e1d8e87def54?auto=format&fit=crop&w=600&q=80",
             bio: "Ensuring 100% legally verified properties and hassle-free documentation. Amit brings clarity to complex property laws, making the registration process smooth for all our buyers.",
             specialization: ["Property Law", "Documentation", "RERA Compliance"],
             experience: "12+ Years",
@@ -58,7 +58,7 @@ const About = () => {
         {
             name: "Sneha Gupta",
             role: "Customer Relations",
-            image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=600&q=80",
+            image: "https://images.unsplash.com/photo-1653379672849-c4c5562063b1?auto=format&fit=crop&w=600&q=80",
             bio: "Dedicated to providing seamless support throughout your buying journey. Sneha manages post-sales services and ensures that every query is resolved within 24 hours.",
             specialization: ["Client Support", "After-sales Service", "Feedback Management"],
             experience: "5+ Years",
@@ -69,7 +69,7 @@ const About = () => {
         {
             name: "Vikram Malhotra",
             role: "Senior Architect",
-            image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=600&q=80",
+            image: "https://images.unsplash.com/photo-1581125119293-4803aa54b372?auto=format&fit=crop&w=600&q=80",
             bio: "Vikram blends modern aesthetics with functional design. He has designed some of Dhanbad's most iconic residential complexes, focusing on sustainable and green living spaces.",
             specialization: ["Urban Planning", "Sustainable Design", "Interior Architecture"],
             experience: "10+ Years",
@@ -80,7 +80,7 @@ const About = () => {
         {
             name: "Anjali Desai",
             role: "Marketing Director",
-            image: "https://images.unsplash.com/photo-1598550874175-4d7112ee750c?auto=format&fit=crop&w=600&q=80",
+            image: "https://images.unsplash.com/photo-1759840278471-462cf3fcebd3?auto=format&fit=crop&w=600&q=80",
             bio: "Anjali leads our digital and offline marketing strategies. Her campaigns have helped connect thousands of buyers with their dream homes across Jharkhand.",
             specialization: ["Digital Marketing", "Brand Management", "Public Relations"],
             experience: "7+ Years",
@@ -102,7 +102,7 @@ const About = () => {
         {
             name: "Meera Reddy",
             role: "Financial Consultant",
-            image: "https://images.unsplash.com/photo-1554721205-f9e5c3ed6074?auto=format&fit=crop&w=600&q=80",
+            image: "https://images.unsplash.com/photo-1722061501329-33ac71e94ce6?auto=format&fit=crop&w=600&q=80",
             bio: "Meera helps our clients navigate the complex world of home loans and mortgages. She works with top banks to secure the best interest rates for our buyers.",
             specialization: ["Home Loans", "Investment Banking", "Tax Consultation"],
             experience: "14+ Years",
