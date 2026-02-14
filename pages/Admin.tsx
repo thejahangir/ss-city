@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import LogoTransparent from "../src/assets/img/logo-transparent.png";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line 
 } from 'recharts';
@@ -7,10 +8,10 @@ import {
   LayoutDashboard, Home, Users, Plus, Trash2, Edit, Image as ImageIcon, 
   Video, FileText, Settings, Download, Search, Mail, Phone, MessageSquare, 
   UserCheck, Bell, Save, UploadCloud, X, ChevronLeft, ChevronRight, CheckSquare, Square,
-  Tag, LogOut
+  Tag, LogOut, Lock, ShieldCheck, ArrowRight, MapPin, PlayCircle
 } from 'lucide-react';
 import { MOCK_PROPERTIES, MOCK_BLOGS, LOCATIONS, SUGGESTED_AMENITIES } from '../constants';
-import { Property, ListingType, PropertyType, PropertyStatus } from '../types';
+import { Property, ListingType, PropertyType, PropertyStatus, Landmark } from '../types';
 
 // Mock Data for new sections
 const MOCK_LEADS = [
@@ -47,22 +48,32 @@ const INITIAL_FORM_STATE = {
     description: '',
     price: '',
     location: '',
-    type: PropertyType.FLAT,
+    type: PropertyType.PLOT, // Default to PLOT
     status: PropertyStatus.READY,
     listingType: ListingType.BUY,
     bedrooms: '',
     bathrooms: '',
     area: '',
+    dimensions: '',
+    facing: '',
     amenities: [] as string[],
     agentContact: '',
     featured: false,
     newLaunch: false,
     primeCommercial: false,
-    images: [] as string[]
+    images: [] as string[],
+    videos: [] as string[],
+    landmarks: [] as Landmark[]
 };
 
 export const Admin: React.FC = () => {
   const navigate = useNavigate();
+
+  // Authentication State
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loginForm, setLoginForm] = useState({ email: '', password: '' });
+  const [loginError, setLoginError] = useState('');
+  
   const [activeTab, setActiveTab] = useState<'dashboard' | 'properties' | 'leads' | 'enquiries' | 'agents' | 'blogs' | 'settings'>('dashboard');
   
   // Lists State
@@ -84,6 +95,10 @@ export const Admin: React.FC = () => {
   // Amenities State
   const [amenityInput, setAmenityInput] = useState('');
 
+  // File Input Refs
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
+
   // Blog Form State
   const [isAddingBlog, setIsAddingBlog] = useState(false);
 
@@ -96,6 +111,107 @@ export const Admin: React.FC = () => {
 
   // Logout State
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (loginForm.email === 'admin@admin.com' && loginForm.password === '123456') {
+      setIsAuthenticated(true);
+      setLoginError('');
+    } else {
+      setLoginError('Invalid credentials. Please check your email and password.');
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setShowLogoutConfirm(false);
+    setLoginForm({ email: '', password: '' });
+  };
+
+  // If not authenticated, show modern login screen
+  if (!isAuthenticated) {
+    return (
+        <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-slate-900 font-sans selection:bg-brand-primary selection:text-white">
+            {/* Background Decor */}
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+                <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-brand-primary/20 rounded-full blur-[100px] animate-pulse"></div>
+                <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-brand-secondary/20 rounded-full blur-[100px] animate-pulse" style={{animationDelay: '2s'}}></div>
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+            </div>
+
+            <div className="relative z-10 w-full max-w-md p-6">
+                {/* Brand Logo Area */}
+                <div className="text-center mb-10">
+                   
+                        <img
+                            src={LogoTransparent}
+                            alt="Shree Shyam City"
+                            
+                        />
+                  <br /><br />
+                    {/* <h1 className="text-4xl font-heading font-bold text-white mb-2">Welcome Back</h1> */}
+                    <p className="text-slate-400">Enter your credentials to access the admin panel.</p>
+                </div>
+
+                {/* Login Form Card */}
+                <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[2.5rem] shadow-2xl">
+                    <form onSubmit={handleLogin} className="space-y-6">
+                        <div className="space-y-2">
+                            <label className="text-sm font-bold text-slate-300 ml-1">Email Address</label>
+                            <div className="relative">
+                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                                    <Mail size={20} />
+                                </div>
+                                <input 
+                                    type="email" 
+                                    value={loginForm.email}
+                                    onChange={e => setLoginForm({...loginForm, email: e.target.value})}
+                                    className="w-full bg-slate-800/50 border border-slate-700 text-white pl-12 pr-4 py-4 rounded-xl focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary outline-none transition placeholder-slate-500"
+                                    placeholder="admin@admin.com"
+                                />
+                            </div>
+                        </div>
+                        
+                        <div className="space-y-2">
+                            <label className="text-sm font-bold text-slate-300 ml-1">Password</label>
+                            <div className="relative">
+                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                                    <Lock size={20} />
+                                </div>
+                                <input 
+                                    type="password"
+                                    value={loginForm.password}
+                                    onChange={e => setLoginForm({...loginForm, password: e.target.value})}
+                                    className="w-full bg-slate-800/50 border border-slate-700 text-white pl-12 pr-4 py-4 rounded-xl focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary outline-none transition placeholder-slate-500"
+                                    placeholder="••••••••"
+                                />
+                            </div>
+                        </div>
+
+                        {loginError && (
+                            <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm flex items-center animate-in fade-in slide-in-from-top-2">
+                                <ShieldCheck size={16} className="mr-2 flex-shrink-0" /> {loginError}
+                            </div>
+                        )}
+
+                        <button 
+                            type="submit" 
+                            className="w-full bg-gradient-to-r from-brand-primary to-blue-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-brand-primary/25 hover:shadow-brand-primary/40 transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center group"
+                        >
+                            Sign In <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                        </button>
+                    </form>
+                </div>
+
+                <div className="text-center mt-8">
+                    <button onClick={() => navigate('/')} className="text-slate-500 hover:text-white text-sm font-medium transition-colors">
+                        Back to Website
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+  }
 
   // Calculate Pagination
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -126,12 +242,16 @@ export const Admin: React.FC = () => {
           bedrooms: property.bedrooms?.toString() || '',
           bathrooms: property.bathrooms?.toString() || '',
           area: property.area.toString(),
+          dimensions: property.dimensions || '',
+          facing: property.facing || '',
           amenities: property.amenities,
           agentContact: property.agentContact,
           featured: property.featured || false,
           newLaunch: property.newLaunch || false,
           primeCommercial: property.primeCommercial || false,
-          images: property.images
+          images: property.images,
+          videos: property.videos || [],
+          landmarks: property.landmarks || []
       });
       setIsAddingProperty(true);
       setAmenityInput('');
@@ -156,6 +276,57 @@ export const Admin: React.FC = () => {
       setFormData({ ...formData, amenities: formData.amenities.filter(a => a !== amenity) });
   };
 
+  // File Upload Handlers
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>, type: 'image' | 'video') => {
+    if (e.target.files && e.target.files.length > 0) {
+      const files = Array.from(e.target.files);
+      const processedFiles = await Promise.all(files.map(file => {
+        return new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(file as Blob);
+        });
+      }));
+      
+      if (type === 'image') {
+        setFormData(prev => ({ ...prev, images: [...prev.images, ...processedFiles] }));
+      } else {
+        setFormData(prev => ({ ...prev, videos: [...prev.videos, ...processedFiles] }));
+      }
+    }
+  };
+
+  const removeMedia = (index: number, type: 'image' | 'video') => {
+      if (type === 'image') {
+        setFormData(prev => ({ ...prev, images: prev.images.filter((_, i) => i !== index) }));
+      } else {
+        setFormData(prev => ({ ...prev, videos: prev.videos.filter((_, i) => i !== index) }));
+      }
+  };
+
+  // Landmark Handlers
+  const handleAddLandmark = () => {
+    setFormData({
+        ...formData,
+        landmarks: [...formData.landmarks, { name: '', distance: '', category: 'Transport' }]
+    });
+  };
+
+  const handleRemoveLandmark = (index: number) => {
+      const newLandmarks = [...formData.landmarks];
+      newLandmarks.splice(index, 1);
+      setFormData({ ...formData, landmarks: newLandmarks });
+  };
+
+  const handleLandmarkChange = (index: number, field: keyof Landmark, value: string) => {
+      const newLandmarks = [...formData.landmarks];
+      // @ts-ignore
+      newLandmarks[index] = { ...newLandmarks[index], [field]: value };
+      setFormData({ ...formData, landmarks: newLandmarks });
+  };
+
+
   const filteredAmenitiesSuggestions = SUGGESTED_AMENITIES.filter(
       a => a.toLowerCase().includes(amenityInput.toLowerCase()) && !formData.amenities.includes(a)
   ).slice(0, 5); // Limit to 5 suggestions
@@ -179,12 +350,16 @@ export const Admin: React.FC = () => {
           bedrooms: Number(formData.bedrooms) || 0,
           bathrooms: Number(formData.bathrooms) || 0,
           area: Number(formData.area),
+          dimensions: formData.dimensions,
+          facing: formData.facing,
           amenities: formData.amenities,
           agentContact: formData.agentContact || '+91 9876543210',
           featured: formData.featured,
           newLaunch: formData.newLaunch,
           primeCommercial: formData.primeCommercial,
-          images: formData.images.length > 0 ? formData.images : ['https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80']
+          images: formData.images.length > 0 ? formData.images : ['https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80'],
+          videos: formData.videos,
+          landmarks: formData.landmarks
       };
 
       if (editPropertyId) {
@@ -209,11 +384,6 @@ export const Admin: React.FC = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };
-
-  const handleLogout = () => {
-    // In a real app, perform logout logic (clearing tokens, etc.)
-    navigate('/');
   };
 
   const SidebarItem = ({ id, icon: Icon, label }: { id: typeof activeTab, icon: any, label: string }) => (
@@ -436,6 +606,35 @@ export const Admin: React.FC = () => {
                                     />
                                 </div>
                                 <div className="space-y-2">
+                                    <label className="text-sm font-bold text-slate-700">Dimensions</label>
+                                    <input 
+                                        type="text" 
+                                        value={formData.dimensions}
+                                        onChange={(e) => setFormData({...formData, dimensions: e.target.value})}
+                                        placeholder="e.g. 40x50 ft" 
+                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-brand-primary outline-none" 
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-bold text-slate-700">Facing</label>
+                                    <select 
+                                        value={formData.facing}
+                                        onChange={(e) => setFormData({...formData, facing: e.target.value})}
+                                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-brand-primary outline-none" 
+                                    >
+                                        <option value="">Select Facing</option>
+                                        <option value="North">North</option>
+                                        <option value="South">South</option>
+                                        <option value="East">East</option>
+                                        <option value="West">West</option>
+                                        <option value="North-East">North-East</option>
+                                        <option value="North-West">North-West</option>
+                                        <option value="South-East">South-East</option>
+                                        <option value="South-West">South-West</option>
+                                        <option value="Corner">Corner</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-2">
                                     <label className="text-sm font-bold text-slate-700">Bedrooms</label>
                                     <input 
                                         type="number" 
@@ -572,6 +771,74 @@ export const Admin: React.FC = () => {
                                 <p className="text-xs text-slate-500">Type comma (,) or press Enter to add a tag. Select from suggestions for standard amenities.</p>
                             </div>
 
+                             {/* Landmarks Section - NEW */}
+                             <div className="space-y-4 mb-6 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                                <div className="flex justify-between items-center mb-2">
+                                    <label className="text-sm font-bold text-slate-700 flex items-center">
+                                        <MapPin size={16} className="mr-2 text-brand-primary" /> 
+                                        Nearby Landmarks
+                                    </label>
+                                    <button 
+                                        onClick={handleAddLandmark}
+                                        className="text-xs font-bold text-white bg-brand-primary px-3 py-1.5 rounded-lg hover:bg-blue-700 transition flex items-center"
+                                    >
+                                        <Plus size={14} className="mr-1" /> Add Landmark
+                                    </button>
+                                </div>
+                                
+                                {formData.landmarks.length === 0 ? (
+                                    <div className="text-center py-6 border-2 border-dashed border-slate-300 rounded-xl text-slate-400 text-sm">
+                                        No landmarks added yet. Add nearby locations to highlight property value.
+                                    </div>
+                                ) : (
+                                    <div className="space-y-3">
+                                        {formData.landmarks.map((landmark, index) => (
+                                            <div key={index} className="flex flex-col sm:flex-row gap-3 items-start sm:items-center bg-white p-3 rounded-xl border border-slate-100 shadow-sm">
+                                                <div className="flex-1 w-full sm:w-auto">
+                                                    <input 
+                                                        type="text" 
+                                                        placeholder="Name (e.g. City Centre)"
+                                                        value={landmark.name}
+                                                        onChange={(e) => handleLandmarkChange(index, 'name', e.target.value)}
+                                                        className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:border-brand-primary outline-none"
+                                                    />
+                                                </div>
+                                                <div className="w-full sm:w-24">
+                                                    <input 
+                                                        type="text" 
+                                                        placeholder="Dist (2km)"
+                                                        value={landmark.distance}
+                                                        onChange={(e) => handleLandmarkChange(index, 'distance', e.target.value)}
+                                                        className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:border-brand-primary outline-none"
+                                                    />
+                                                </div>
+                                                <div className="w-full sm:w-32">
+                                                    <select 
+                                                        value={landmark.category}
+                                                        onChange={(e) => handleLandmarkChange(index, 'category', e.target.value as any)}
+                                                        className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:border-brand-primary outline-none"
+                                                    >
+                                                        <option value="Transport">Transport</option>
+                                                        <option value="Education">Education</option>
+                                                        <option value="Healthcare">Healthcare</option>
+                                                        <option value="Lifestyle">Lifestyle</option>
+                                                        <option value="Religious">Religious</option>
+                                                        <option value="Business">Business</option>
+                                                    </select>
+                                                </div>
+                                                <button 
+                                                    onClick={() => handleRemoveLandmark(index)} 
+                                                    className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
+                                                    title="Remove Landmark"
+                                                >
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+
                             <div className="space-y-2 mb-4">
                                 <label className="text-sm font-bold text-slate-700">Agent Contact Number</label>
                                 <input 
@@ -593,15 +860,39 @@ export const Admin: React.FC = () => {
                                 ></textarea>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:bg-slate-50 transition cursor-pointer">
+                            {/* Hidden File Inputs */}
+                            <input 
+                                type="file" 
+                                ref={imageInputRef} 
+                                className="hidden" 
+                                accept="image/*" 
+                                multiple 
+                                onChange={(e) => handleFileSelect(e, 'image')} 
+                            />
+                            <input 
+                                type="file" 
+                                ref={videoInputRef} 
+                                className="hidden" 
+                                accept="video/*" 
+                                multiple 
+                                onChange={(e) => handleFileSelect(e, 'video')} 
+                            />
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div 
+                                    onClick={() => imageInputRef.current?.click()}
+                                    className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:bg-slate-50 transition cursor-pointer hover:border-brand-primary"
+                                >
                                     <div className="w-12 h-12 bg-blue-50 text-brand-primary rounded-full flex items-center justify-center mx-auto mb-3">
                                         <ImageIcon size={24} />
                                     </div>
                                     <h4 className="font-bold text-slate-700">Upload Images</h4>
                                     <p className="text-xs text-slate-500 mt-1">Drag & drop or click to browse</p>
                                 </div>
-                                <div className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:bg-slate-50 transition cursor-pointer">
+                                <div 
+                                    onClick={() => videoInputRef.current?.click()}
+                                    className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:bg-slate-50 transition cursor-pointer hover:border-brand-primary"
+                                >
                                     <div className="w-12 h-12 bg-orange-50 text-brand-secondary rounded-full flex items-center justify-center mx-auto mb-3">
                                         <Video size={24} />
                                     </div>
@@ -609,6 +900,54 @@ export const Admin: React.FC = () => {
                                     <p className="text-xs text-slate-500 mt-1">MP4, WebM supported</p>
                                 </div>
                             </div>
+
+                            {/* Image Previews */}
+                            {formData.images.length > 0 && (
+                                <div className="mb-6">
+                                    <h5 className="text-sm font-bold text-slate-700 mb-3 flex items-center"><ImageIcon size={14} className="mr-2"/> Uploaded Images</h5>
+                                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                                        {formData.images.map((img, idx) => (
+                                            <div key={`img-${idx}`} className="relative group rounded-xl overflow-hidden shadow-sm border border-slate-200 aspect-square">
+                                                <img src={img} alt="Preview" className="w-full h-full object-cover" />
+                                                <button 
+                                                    onClick={(e) => { e.stopPropagation(); removeMedia(idx, 'image'); }}
+                                                    className="absolute top-2 right-2 bg-white/90 text-red-500 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-white"
+                                                    title="Remove Image"
+                                                >
+                                                    <Trash2 size={14} />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Video Previews */}
+                            {formData.videos.length > 0 && (
+                                <div>
+                                    <h5 className="text-sm font-bold text-slate-700 mb-3 flex items-center"><Video size={14} className="mr-2"/> Uploaded Videos</h5>
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                        {formData.videos.map((vid, idx) => (
+                                            <div key={`vid-${idx}`} className="relative group rounded-xl overflow-hidden shadow-sm border border-slate-200 aspect-video bg-black">
+                                                <video src={vid} className="w-full h-full object-cover opacity-80" />
+                                                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                                    <div className="p-2 bg-white/20 backdrop-blur-sm rounded-full">
+                                                        <PlayCircle size={24} className="text-white" />
+                                                    </div>
+                                                </div>
+                                                <button 
+                                                    onClick={(e) => { e.stopPropagation(); removeMedia(idx, 'video'); }}
+                                                    className="absolute top-2 right-2 bg-white/90 text-red-500 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-white z-10"
+                                                    title="Remove Video"
+                                                >
+                                                    <Trash2 size={14} />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
                         </div>
 
                         <div className="flex justify-end gap-3 mt-8 pt-6 border-t border-slate-100">

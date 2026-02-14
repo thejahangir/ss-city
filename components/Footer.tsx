@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, X, MapPin, Phone, Mail, ArrowRight } from 'lucide-react';
+import LogoTransparent from "../src/assets/img/logo-transparent.png";
 
 export const Footer: React.FC = () => {
   return (
@@ -9,8 +10,9 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="col-span-1 md:col-span-1">
             <Link to="/" className="flex items-center space-x-2 mb-6">
-                <span className="bg-brand-primary text-white p-1.5 rounded-lg font-bold font-heading">SSC</span>
-                <span className="text-2xl font-heading font-bold">Shree Shyam<span className="text-brand-primary">City</span></span>
+                {/* <span className="bg-brand-primary text-white p-1.5 rounded-lg font-bold font-heading">SSC</span>
+                <span className="text-2xl font-heading font-bold">Shree Shyam<span className="text-brand-primary">City</span></span> */}
+                <img src={LogoTransparent} className="logo-sscity-footer" />
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
               Empowering Dhanbad with premium real estate solutions. We bridge the gap between dream homes and reality with trust and transparency.

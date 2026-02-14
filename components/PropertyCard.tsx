@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Bed, Bath, Square, ArrowRight, Heart } from 'lucide-react';
+import { MapPin, ArrowRight, Heart } from 'lucide-react';
 import { Property, ListingType } from '../types';
 
 interface PropertyCardProps {
@@ -53,21 +53,6 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         <div className="flex items-center text-slate-500 text-sm mb-4">
           <MapPin size={16} className="mr-1 text-brand-secondary" />
           {property.location}, Dhanbad
-        </div>
-        
-        <div className="grid grid-cols-3 gap-2 py-4 border-t border-slate-100">
-          <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-slate-50">
-             <Bed size={20} className="text-slate-400 mb-1" />
-             <span className="text-xs font-bold text-slate-700">{property.bedrooms || '-'} Beds</span>
-          </div>
-          <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-slate-50">
-             <Bath size={20} className="text-slate-400 mb-1" />
-             <span className="text-xs font-bold text-slate-700">{property.bathrooms || '-'} Baths</span>
-          </div>
-          <div className="flex flex-col items-center justify-center p-2 rounded-lg bg-slate-50">
-             <Square size={20} className="text-slate-400 mb-1" />
-             <span className="text-xs font-bold text-slate-700">{property.area} sqft</span>
-          </div>
         </div>
         
         <Link 

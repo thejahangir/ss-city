@@ -1,8 +1,9 @@
 export enum PropertyType {
-    FLAT = 'Flat',
     PLOT = 'Plot',
+    VILLA = 'Villa',
+    FARMHOUSE = 'Farmhouse',
     COMMERCIAL = 'Commercial',
-    VILLA = 'Villa'
+    FLAT = 'Apartment'
 }
 
 export enum PropertyStatus {
@@ -13,6 +14,12 @@ export enum PropertyStatus {
 export enum ListingType {
     BUY = 'Buy',
     RENT = 'Rent'
+}
+
+export interface Landmark {
+    name: string;
+    distance: string;
+    category: 'Education' | 'Healthcare' | 'Transport' | 'Lifestyle' | 'Religious' | 'Business';
 }
 
 export interface Property {
@@ -26,14 +33,18 @@ export interface Property {
     listingType: ListingType;
     bedrooms?: number;
     bathrooms?: number;
-    area: number; // sq ft
+    area: number; // sq ft (or sq yards/decimal for plots, but keeping as number for simplicity)
+    dimensions?: string; // e.g., 40x50 ft
+    facing?: string; // e.g., North, East
     images: string[];
+    videos?: string[];
     amenities: string[];
     featured?: boolean;
     newLaunch?: boolean;      // New category flag
     primeCommercial?: boolean; // New category flag
     agentContact: string;
     coordinates?: { lat: number, lng: number };
+    landmarks?: Landmark[];
 }
 
 export interface Lead {

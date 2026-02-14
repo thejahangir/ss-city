@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { MapPin, Bed, Bath, Square, Phone, CheckCircle2, Share2, X, ChevronLeft, ChevronRight, Facebook, Twitter, Copy, MessageCircle } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Phone, CheckCircle2, Share2, X, ChevronLeft, ChevronRight, Facebook, Twitter, Copy, MessageCircle, School, Train, Stethoscope, ShoppingBag, Landmark as LandmarkIcon, Building, Maximize, Compass } from 'lucide-react';
 import { MOCK_PROPERTIES } from '../constants';
+import { PropertyType } from '../types';
 
 export const PropertyDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -95,6 +96,20 @@ export const PropertyDetails: React.FC = () => {
       setIsShareMenuOpen(false);
     }
   };
+
+  const getLandmarkIcon = (category: string) => {
+      switch(category) {
+          case 'Education': return <School className="w-5 h-5" />;
+          case 'Healthcare': return <Stethoscope className="w-5 h-5" />;
+          case 'Transport': return <Train className="w-5 h-5" />;
+          case 'Lifestyle': return <ShoppingBag className="w-5 h-5" />;
+          case 'Religious': return <LandmarkIcon className="w-5 h-5" />;
+          case 'Business': return <Building className="w-5 h-5" />;
+          default: return <MapPin className="w-5 h-5" />;
+      }
+  };
+
+  const isLand = property.type === PropertyType.PLOT || property.type === PropertyType.FARMHOUSE || property.type === PropertyType.COMMERCIAL;
 
   return (
     <div className="bg-slate-50 min-h-screen pt-24 pb-12">
@@ -266,25 +281,50 @@ export const PropertyDetails: React.FC = () => {
             {/* Details Column */}
             <div className="lg:col-span-2 space-y-8">
                 {/* Key Stats */}
-                <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 grid grid-cols-3 gap-4">
-                    <div className="text-center border-r border-slate-100">
-                        <div className="text-slate-400 text-sm mb-1 font-medium uppercase tracking-wide">Bedrooms</div>
-                        <div className="text-2xl font-bold text-slate-800 flex justify-center items-center">
-                            <Bed className="mr-2 text-brand-primary" size={24} /> {property.bedrooms || 'N/A'}
+                <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                    {isLand ? (
+                         <div className="grid grid-cols-3 gap-4">
+                            <div className="text-center border-r border-slate-100">
+                                <div className="text-slate-400 text-sm mb-1 font-medium uppercase tracking-wide">Plot Area</div>
+                                <div className="text-2xl font-bold text-slate-800 flex justify-center items-center">
+                                    <Square className="mr-2 text-brand-primary" size={24} /> {property.area} <span className="text-base font-normal ml-1 text-slate-500">sqft</span>
+                                </div>
+                            </div>
+                            <div className="text-center border-r border-slate-100">
+                                <div className="text-slate-400 text-sm mb-1 font-medium uppercase tracking-wide">Dimensions</div>
+                                <div className="text-2xl font-bold text-slate-800 flex justify-center items-center">
+                                    <Maximize className="mr-2 text-brand-primary" size={24} /> {property.dimensions || 'N/A'}
+                                </div>
+                            </div>
+                             <div className="text-center">
+                                <div className="text-slate-400 text-sm mb-1 font-medium uppercase tracking-wide">Facing</div>
+                                <div className="text-2xl font-bold text-slate-800 flex justify-center items-center">
+                                    <Compass className="mr-2 text-brand-primary" size={24} /> {property.facing || 'N/A'}
+                                </div>
+                            </div>
+                         </div>
+                    ) : (
+                        <div className="grid grid-cols-3 gap-4">
+                            <div className="text-center border-r border-slate-100">
+                                <div className="text-slate-400 text-sm mb-1 font-medium uppercase tracking-wide">Bedrooms</div>
+                                <div className="text-2xl font-bold text-slate-800 flex justify-center items-center">
+                                    <Bed className="mr-2 text-brand-primary" size={24} /> {property.bedrooms || 'N/A'}
+                                </div>
+                            </div>
+                            <div className="text-center border-r border-slate-100">
+                                <div className="text-slate-400 text-sm mb-1 font-medium uppercase tracking-wide">Bathrooms</div>
+                                <div className="text-2xl font-bold text-slate-800 flex justify-center items-center">
+                                    <Bath className="mr-2 text-brand-primary" size={24} /> {property.bathrooms || 'N/A'}
+                                </div>
+                            </div>
+                            <div className="text-center">
+                                <div className="text-slate-400 text-sm mb-1 font-medium uppercase tracking-wide">Area</div>
+                                <div className="text-2xl font-bold text-slate-800 flex justify-center items-center">
+                                    <Square className="mr-2 text-brand-primary" size={24} /> {property.area} <span className="text-base font-normal ml-1 text-slate-500">sqft</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="text-center border-r border-slate-100">
-                        <div className="text-slate-400 text-sm mb-1 font-medium uppercase tracking-wide">Bathrooms</div>
-                        <div className="text-2xl font-bold text-slate-800 flex justify-center items-center">
-                            <Bath className="mr-2 text-brand-primary" size={24} /> {property.bathrooms || 'N/A'}
-                        </div>
-                    </div>
-                    <div className="text-center">
-                        <div className="text-slate-400 text-sm mb-1 font-medium uppercase tracking-wide">Area</div>
-                        <div className="text-2xl font-bold text-slate-800 flex justify-center items-center">
-                            <Square className="mr-2 text-brand-primary" size={24} /> {property.area} sqft
-                        </div>
-                    </div>
+                    )}
                 </div>
 
                 {/* Description */}
@@ -307,6 +347,51 @@ export const PropertyDetails: React.FC = () => {
                         ))}
                     </div>
                 </div>
+
+                 {/* Video Tour Section - NEW */}
+                 {property.videos && property.videos.length > 0 && (
+                    <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <h3 className="text-xl font-heading font-bold mb-6 text-slate-900">Video Tour</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {property.videos.map((video, idx) => (
+                                <div key={idx} className="rounded-xl overflow-hidden shadow-sm border border-slate-100 bg-black aspect-video">
+                                     <video controls className="w-full h-full">
+                                        <source src={video} />
+                                        Your browser does not support the video tag.
+                                     </video>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Nearby Landmarks for Plots */}
+                {property.type === PropertyType.PLOT && property.landmarks && property.landmarks.length > 0 && (
+                    <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="flex items-center mb-6">
+                            <MapPin className="text-brand-primary mr-3" size={24} />
+                            <h3 className="text-xl font-heading font-bold text-slate-900">Location Highlights & Landmarks</h3>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {property.landmarks.map((landmark, index) => (
+                                <div key={index} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-brand-primary/30 transition-colors group">
+                                    <div className="flex items-center gap-4">
+                                        <div className="p-3 bg-white rounded-full text-brand-primary shadow-sm group-hover:scale-110 transition-transform duration-300">
+                                            {getLandmarkIcon(landmark.category)}
+                                        </div>
+                                        <div>
+                                            <div className="font-bold text-slate-800">{landmark.name}</div>
+                                            <div className="text-xs text-slate-500 font-medium uppercase tracking-wide mt-0.5">{landmark.category}</div>
+                                        </div>
+                                    </div>
+                                    <div className="bg-white px-3 py-1 rounded-lg border border-slate-100 shadow-sm font-bold text-slate-700 text-sm">
+                                        {landmark.distance}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                  {/* Location Map */}
                 <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">

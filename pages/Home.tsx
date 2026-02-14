@@ -4,6 +4,7 @@ import { Search, MapPin, TrendingUp, Home as HomeIcon, Clock, Building2, Chevron
 import { MOCK_PROPERTIES } from '../constants';
 import { PropertyCard } from '../components/PropertyCard';
 import { PropertyStatus, PropertyType, ListingType } from '../types';
+import HeroBg from "../src/assets/img/plot3.png"
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export const Home: React.FC = () => {
         <div className="absolute inset-0 z-0">
           <div 
             className="w-full h-full bg-cover bg-center bg-fixed bg-no-repeat"
-            style={{ backgroundImage: 'url("https://images.pexels.com/photos/35229793/pexels-photo-35229793.jpeg?auto=compress&cs=tinysrgb&w=1920")' }}
+            style={{ backgroundImage: `url(${HeroBg})` }}
           />
           {/* Lighter overlay for better visibility of background image */}
           <div className="absolute inset-0 bg-slate-900/40"></div>
@@ -44,9 +45,9 @@ export const Home: React.FC = () => {
                     #1 Real Estate Platform in Jharkhand
                 </div>
                 <h1 className="text-5xl md:text-7xl font-heading font-extrabold text-white leading-tight mb-6 drop-shadow-xl">
-                    Discover Your <br/>
+                Find Your Dream<br/>
                     {/* Vibrant Title Gradient using new Brand Secondary and Accent */}
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00BBF9] to-[#0EAD69]">Perfect Space</span>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00BBF9] to-[#0EAD69]">Plot or Villa</span>
                 </h1>
                 <p className="text-lg md:text-xl text-slate-100 mb-8 max-w-xl mx-auto lg:mx-0 font-light leading-relaxed drop-shadow-md">
                     Browse thousands of verified listings in Dhanbad. From luxury villas in Saraidhela to commercial hubs in Bank More.
