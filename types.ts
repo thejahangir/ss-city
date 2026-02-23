@@ -66,3 +66,34 @@ export interface BlogPost {
     author: string;
     imageUrl: string;
 }
+
+export interface Customer {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+    propertiesBought: {
+        propertyId: string;
+        title: string;
+        price: number;
+        date: string;
+    }[];
+    interestedProperties: {
+        propertyId: string;
+        title: string;
+        status: 'Viewed' | 'Contacted' | 'Offer Made';
+    }[];
+    paymentHistory: {
+        id: string;
+        amount: number;
+        date: string;
+        description: string;
+        status: 'Paid' | 'Pending' | 'Failed';
+    }[];
+    totalPaid: number;
+    pendingAmount: number;
+    notes: string;
+    avatarUrl?: string;
+    status: 'Active' | 'Inactive' | 'VIP';
+}

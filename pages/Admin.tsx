@@ -4,11 +4,12 @@ import LogoTransparent from "../src/assets/img/logo-transparent.png";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line 
 } from 'recharts';
+import { AdminCustomers } from './AdminCustomers.tsx';
 import { 
   LayoutDashboard, Home, Users, Plus, Trash2, Edit, Image as ImageIcon, 
   Video, FileText, Settings, Download, Search, Mail, Phone, MessageSquare, 
   UserCheck, Bell, Save, UploadCloud, X, ChevronLeft, ChevronRight, CheckSquare, Square,
-  Tag, LogOut, Lock, ShieldCheck, ArrowRight, MapPin, PlayCircle
+  Tag, LogOut, Lock, ShieldCheck, ArrowRight, MapPin, PlayCircle, User, Clock
 } from 'lucide-react';
 import { MOCK_PROPERTIES, MOCK_BLOGS, LOCATIONS, SUGGESTED_AMENITIES } from '../constants';
 import { Property, ListingType, PropertyType, PropertyStatus, Landmark } from '../types';
@@ -74,7 +75,7 @@ export const Admin: React.FC = () => {
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [loginError, setLoginError] = useState('');
   
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'properties' | 'leads' | 'enquiries' | 'agents' | 'blogs' | 'settings'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'properties' | 'leads' | 'enquiries' | 'agents' | 'blogs' | 'settings' | 'customers'>('dashboard');
   
   // Lists State
   const [properties, setProperties] = useState(MOCK_PROPERTIES);
@@ -407,6 +408,7 @@ export const Admin: React.FC = () => {
         <nav className="flex-1 space-y-2">
             <SidebarItem id="dashboard" icon={LayoutDashboard} label="Dashboard" />
             <SidebarItem id="properties" icon={Home} label="Properties" />
+            <SidebarItem id="customers" icon={User} label="Customers" />
             <SidebarItem id="leads" icon={Users} label="Leads" />
             <SidebarItem id="enquiries" icon={MessageSquare} label="Enquiries" />
             <SidebarItem id="agents" icon={UserCheck} label="Agents" />
@@ -1045,6 +1047,9 @@ export const Admin: React.FC = () => {
                 </div>
             </div>
         )}
+
+        {/* CUSTOMERS */}
+        {activeTab === 'customers' && <AdminCustomers />}
 
         {/* LEADS */}
         {activeTab === 'leads' && (
