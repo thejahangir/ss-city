@@ -7,7 +7,7 @@ import { Listing } from './pages/Listing';
 import { PropertyDetails } from './pages/PropertyDetails';
 import { Admin } from './pages/Admin';
 import { MOCK_BLOGS } from './constants';
-import { ArrowRight, Mail, Phone, MapPin, Award, Users, TrendingUp, Target, X, Linkedin, Globe, CheckCircle2, Building2, Landmark, Map, FileText, BadgePercent, Coins, Lightbulb, ChevronRight, Bus, School, ShoppingBag, Stethoscope } from 'lucide-react';
+import { ArrowRight, Mail, Phone, MapPin, Award, Users, TrendingUp, Target, X, Linkedin, Globe, CheckCircle2, Building2, Landmark, Map, FileText, BadgePercent, Coins, Lightbulb, ChevronRight, Bus, School, ShoppingBag, Stethoscope, MessageCircle } from 'lucide-react';
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -921,7 +921,20 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <main className="flex-grow">
                 {children}
             </main>
-            {!isAdmin && <Footer />}
+            {!isAdmin && (
+                <>
+                    <Footer />
+                    <a
+                        href="https://wa.me/919876543210"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="fixed bottom-8 right-8 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 flex items-center justify-center group hover:bg-[#20bd5a]"
+                        aria-label="Connect via WhatsApp"
+                    >
+                        <MessageCircle size={28} />
+                    </a>
+                </>
+            )}
         </div>
     );
 }
